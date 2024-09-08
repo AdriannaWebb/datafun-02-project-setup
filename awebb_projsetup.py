@@ -48,23 +48,30 @@ def create_folders_for_range(start_year: int, end_year: int) -> None:
 # Pass in a list of folder names 
 #####################################
 
-def create_folders_from_list(folder_list: list) -> None:
+def create_folders_from_list(folder_list: list, to_lowercase: bool = False, remove_spaces: bool = False) -> None:
     '''
-    Create folders from a list of folder names.
+    Create folders from a list of folder names with options to force lowercase and remove spaces.
     
     Arguments:
     folder_list -- A list of folder names to be created.
+    to_lowercase -- Convert folder names to lowercase if True.
+    remove_spaces -- Remove spaces from folder names if True.
     '''
     
     # Log the function call and its arguments using an f-string
-    print(f"FUNCTION CALLED: create_folders_from_list with folder_list={folder_list}")
+    print(f"FUNCTION CALLED: create_folders_from_list with folder_list={folder_list}, to_lowercase={to_lowercase}, remove_spaces={remove_spaces}")
 
     # Iterate over the list and create a folder for each name
     for folder_name in folder_list:
+        # Apply transformations based on parameters
+        if remove_spaces:
+            folder_name = folder_name.replace(" ", "")
+        if to_lowercase:
+            folder_name = folder_name.lower()
+        
         folder_path = data_path.joinpath(folder_name)  # Create the folder path
         folder_path.mkdir(exist_ok=True)  # Create the folder if it doesn't exist
         print(f"Created folder: {folder_path}")  # Provide feedback to the user
-
 
 #####################################
 # Define Function 3. List Comprehension: Create a function to create prefixed folders by transforming a list of names and combining each with a prefix (e.g., "data-").
@@ -138,7 +145,7 @@ def main() -> None:
     print("#####################################\n")
 
     # Print get_byline() from imported module
-    # TODO: Change this to use your module function and uncomment
+    # use your module function and uncomment
     # print(f"Byline: {case_utils.get_byline()}")
 
     # Call function 1 to create folders for a range (e.g. years)
@@ -157,20 +164,12 @@ def main() -> None:
     duration_secs:int = 5  # duration in seconds
     create_folders_periodically(duration_secs)
 
-    # TODO: Add options e.g., to force lowercase and remove spaces 
+    # Add options e.g., to force lowercase and remove spaces 
     # to one or more of your functions (e.g. function 2) 
     # Call your function and test these options
-    regions = [
-      "North America", 
-      "South America", 
-      "Europe", 
-      "Asia", 
-      "Africa", 
-      "Oceania", 
-      "Middle East"
-    ]
-    # Uncomment this line after you've added your custom logic
-    # create_folders_from_list(regions, to_lowercase=True, remove_spaces=True)
+
+    regions = ["North America", "South America", "Europe", "Asia", "Africa", "Oceania", "Middle East"]
+    create_folders_from_list(regions, to_lowercase=True, remove_spaces=True)
 
     # End of main execution
     print("\n#####################################")
